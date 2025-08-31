@@ -1,1 +1,1 @@
-add_subdirectory(spidev-lib)
+add_subdirectory(spidev-lib-forked)
