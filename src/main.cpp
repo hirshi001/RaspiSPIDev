@@ -11,6 +11,25 @@ std::vector<uint8_t> matrixBuffer(NUM_MATRICES * 8, 0x00); // All pixels off
 
 SPI spi("/dev/spidev0.0", nullptr);
 
+void initMax7219() {
+    auto sendAll = [&](uint8_t reg, uint8_t data) {
+        std::vector<uint8_t> tx;
+        for (int m = 0; m < NUM_MATRICES; ++m) {
+            tx.push_back(reg);
+            tx.push_back(data);
+        }
+        std::vector<uint8_t> rx(tx.size());
+        spi.xfer(tx.data(), tx.size(), rx.data(), rx.size());
+    };
+
+    sendAll(0x09, 0x00); // Decode mode: none
+    sendAll(0x0A, 0x03); // Intensity (0x00–0x0F)
+    sendAll(0x0B, 0x07); // Scan limit: all 8 digits
+    sendAll(0x0C, 0x01); // Shutdown: normal operation
+    sendAll(0x0F, 0x00); // Display test: off
+}
+
+
 // Send buffer to all matrices
 void updateMatrices() {
     for (int row = 0; row < 8; ++row) {
@@ -51,16 +70,7 @@ int main() {
 
 
     // Initialize MAX7219
-    for (int m = 0; m < NUM_MATRICES; ++m) {
-        std::vector<uint8_t> initTx;
-        initTx.insert(initTx.end(), {0x09, 0x00}); // Decode mode: none
-        initTx.insert(initTx.end(), {0x0A, 0x03}); // Intensity
-        initTx.insert(initTx.end(), {0x0B, 0x07}); // Scan limit: all rows
-        initTx.insert(initTx.end(), {0x0C, 0x01}); // Shutdown: normal operation
-        initTx.insert(initTx.end(), {0x0F, 0x00}); // Display test: off
-        std::vector<uint8_t> rx(initTx.size());
-        spi.xfer(initTx.data(), initTx.size(), rx.data(), rx.size());
-    }
+    initMax7219();
 
     // Example: turn on a few pixels
     setPixel(0, 0, true);   // Top-left of first matrix
