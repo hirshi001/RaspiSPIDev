@@ -35,7 +35,7 @@ int main() {
             matrix.setPixel(x, y, false); // Clear previous pixel
             x = nx;
             matrix.setPixel(x, y, true);  // Set new pixel
-            int intensity = int(double(nx) / width) * 15;
+            int intensity = nx * 15 / width;
             matrix.setIntensity(intensity);
             matrix.updateMatrices();
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
