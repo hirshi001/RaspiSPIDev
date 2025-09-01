@@ -7,4 +7,4 @@ add_subdirectory(third_party)
 
 add_executable(SPIDevTest src/main.cpp)
 
-target_link_libraries(SPIDevTest spidev-lib++)
+target_link_libraries(SPIDevTest SpidevMatrix)

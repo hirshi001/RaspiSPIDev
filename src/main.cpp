@@ -2,6 +2,7 @@
 #include <vector>
 #include <thread>
 #include "spidev_lib++.h"
+#include "SpidevMatrix/Max7219.h"
 
 
 const int NUM_MATRICES = 4;
@@ -68,16 +69,15 @@ int main() {
     }
     std::cout << "SPI init successful\n";
 
-
-    // Initialize MAX7219
-    initMax7219();
+    Max7219 matrix(NUM_MATRICES, spi);
+    matrix.init();
 
     // Example: turn on a few pixels
-    setPixel(0, 0, true);   // Top-left of first matrix
-    setPixel(7, 7, true);   // Bottom-right of first matrix
-    setPixel(8, 0, true);   // Top-left of second matrix
-    setPixel(31, 7, true);  // Bottom-right of last matrix
-    updateMatrices();
+    matrix.setPixel(0, 0, true);   // Top-left of first matrix
+    matrix.setPixel(7, 7, true);   // Bottom-right of first matrix
+    matrix.setPixel(8, 0, true);   // Top-left of second matrix
+    matrix.setPixel(31, 7, true);  // Bottom-right of last matrix
+    matrix.updateMatrices();
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
