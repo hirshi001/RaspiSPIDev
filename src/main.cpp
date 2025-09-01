@@ -44,9 +44,11 @@ int main() {
     spi.setConfig(&cfg);
 
     if (!spi.begin()) {
-        printf("SPI init failed\n");
+        std::cout << "SPI init failed\n";
         return 1;
     }
+    std::cout << "SPI init successful\n";
+
 
     // Initialize MAX7219
     for (int m = 0; m < NUM_MATRICES; ++m) {
