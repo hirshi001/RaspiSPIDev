@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <thread>
-#include "spidev_lib++.h"
 #include "SpidevMatrix/Max7219.h"
 
 
